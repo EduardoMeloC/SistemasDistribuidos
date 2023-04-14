@@ -1,9 +1,9 @@
 # Laboratório 1
-## Introdução à programação com sockets
-## Sistemas Distribuı́dos (ICP-367 e MAB-733)
-## Prof. Silvana Rossetto
+**Introdução à programação com sockets**
+**Sistemas Distribuı́dos (ICP-367 e MAB-733)**
+**Prof. Silvana Rossetto**
 
-## Instituto de Computação/UFRJ
+**Instituto de Computação/UFRJ**
 
 ## Introdução
 O objetivo deste Laboratório é introduzir a programação com sockets usando a linguagem Python.
