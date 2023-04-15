@@ -1,24 +1,28 @@
-# Exemplo basico socket (lado ativo)
+# Client 
 
 import socket
 
-HOST = 'localhost' # maquina onde esta o par passivo
-PORTA = 5000        # porta que o par passivo esta escutando
+HOST = 'localhost'
+PORT = 5001
 
-# cria socket
-sock = socket.socket() # default: socket.AF_INET, socket.SOCK_STREAM 
+def send_data(sock, data):
+  msg_to_server = data.encode('utf-8')
+  sock.send(msg_to_server)
 
-# conecta-se com o par passivo
-sock.connect((HOST, PORTA)) 
+def receive_data(sock):
+  msg_from_server = sock.recv(1024)
+  string_from_server = msg_from_server.decode('utf-8')
+  return string_from_server
 
-# envia uma mensagem para o par conectado
-sock.send(b"Ola, sou o lado ativo!")
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+  sock.connect((HOST, PORT)) 
 
-#espera a resposta do par conectado (chamada pode ser BLOQUEANTE)
-msg = sock.recv(1024) # argumento indica a qtde maxima de bytes da mensagem
+  running = True
+  while running:
+    user_input = input()
+    if user_input == 'fim':
+      break
 
-# imprime a mensagem recebida
-print(str(msg,  encoding='utf-8'))
-
-# encerra a conexao
-sock.close() 
+    send_data(sock, user_input)
+    string_from_server = receive_data(sock)
+    print(string_from_server)
