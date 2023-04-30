@@ -1,0 +1,35 @@
+direction: right
+
+servidor: Servidor {
+  style: {
+    stroke: transparent
+    font-color: darkblue
+    font-size: 32
+    fill: white
+  }
+  grid-rows: 3
+  grid-columns: 1
+  grid-gap: 0
+
+  Aplicação
+  Domínio
+  Persistência
+}
+
+cliente: Clientes {
+  style: {
+    stroke: transparent
+    font-color: darkblue
+    font-size: 32
+    fill: white
+  }
+  interface: Interface {
+    style: {
+      stroke: darkblue
+      font-color: darkblue
+      multiple: true
+    }
+  }
+}
+
+servidor -> cliente.interface
