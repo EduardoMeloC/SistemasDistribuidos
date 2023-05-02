@@ -2,7 +2,7 @@
 
 ## Dicionário Remoto - Arquitetura
 
-![Ilustração da Arquitetura Cliente Servidor](../docs/arquitetura.png "Ilustração da Arquitetura Cliente Servidor")
+![Ilustração da Arquitetura Cliente Servidor](./docs/arquitetura.png "Ilustração da Arquitetura Cliente Servidor")
 
 A aplicação de **dicionário remoto** será constituída de **quatro** componentes:
 
@@ -14,5 +14,7 @@ A aplicação de **dicionário remoto** será constituída de **quatro** compone
 A proposta da solução é que a camada de **domínio** exponha **interfaces** para as camadas de **persistência** e **aplicação**. Dessa forma, as interfaces descrevem o que a aplicação deve fazer, e contanto que as demais camadas do servidor a implementem, elas podem ser utilizadas. 
 
 Através dessa proposta, **reduzimos o acoplamento entre a aplicação e a persistência**, permitindo que facilmente sejam trocadas, contanto que satisfaçam as nossas regras de negócio, descritas pelas interfaces do domínio.
+
+É válido ressaltar que essa arquitetura segue um **estilo arquitetural em camadas**, e segue uma **arquitetura de sistema centralizada** - o servidor implementa o serviço, e o cliente, consome. 
 
 Detalhes acerca da implementação do **Servidor** e do **Cliente** estarão em seus respectivos diretérios.

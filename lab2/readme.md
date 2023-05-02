@@ -43,6 +43,15 @@ o lado cliente ficará responsável pela interface com o usuário.
 
 **Roteiro**:
 
+1. Defina quais componentes ficarão do lado do **cliente**.
+2. Defina quais componentes ficarão do lado do **servidor**.
+3. Defina o **conteúdo** e a **ordem** das mensagens que serão trocadas entre cliente e servidor, e quais **ações** cada lado deverá tomar quando receber uma mensagem. Essa comunicação ficará responsável por fazer a "cola" entre os componentes instanciados em diferentes máquinas.
+
+## Atividade 3
+**Objetivo**: Implementar e avaliar a aplicação distribuída proposta, seguindo as definições da Atividade 2.
+
+**Roteiro**:
+
 1. Implemente o código do lado cliente e do lado servidor;
 2. Modularize o código de forma concisa e clara;
 3. Experimente a aplicação usando diferentes casos de teste.
