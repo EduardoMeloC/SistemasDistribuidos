@@ -1,5 +1,7 @@
 class IRepositorio(object):
-    def carregar_dicionario(self):
+    def salvar(self, dicionario):
         pass
-    def salvar_dicionario(self):
+
+    def carregar(self):
         pass
+    

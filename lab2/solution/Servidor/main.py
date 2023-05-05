@@ -1,16 +1,26 @@
 import json
 
-arquivo_de_configuracoes = './settings.json'
-global configuracoes
+from Dominio.Dicionario import Dicionario
+from Dominio.ServicoDicionario import ServicoDicionario
+from Persistencia.Repositorio import Repositorio
 
-def load_settings():
+arquivo_de_configuracoes = './settings.json'
+
+def carregar_configuracao():
     with open(arquivo_de_configuracoes, 'r') as arquivo:
         configuracoes = json.load(arquivo)
+        return configuracoes
 
 def main():
-    load_settings()
-    print(configuracoes)
-    pass
+    configuracao = carregar_configuracao()
+    servicoDicionario = ServicoDicionario(Dicionario(), Repositorio(configuracao))
+    servicoDicionario.escrever("a", "abacate")
+    # servicoDicionario.escrever("b", "bergamota")
+    # servicoDicionario.escrever("a", "acerola")
+    servicoDicionario.carregar()
+    print(servicoDicionario.ler("a"))
+    print(servicoDicionario.ler("b"))
+    # servicoDicionario.salvar()
 
 if __name__ == '__main__':
     main()
