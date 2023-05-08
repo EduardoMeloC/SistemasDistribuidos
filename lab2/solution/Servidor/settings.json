@@ -1,3 +1,4 @@
 {
-    "arquivo_de_persistencia" : "db.json"
+    "arquivo_de_persistencia" : "db.json",
+    "porta": 3000
 }

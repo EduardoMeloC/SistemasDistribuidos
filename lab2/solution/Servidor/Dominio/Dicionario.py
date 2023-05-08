@@ -22,7 +22,7 @@ class Dicionario(IDicionario):
 
     def apagar(self, chave):
         if chave in self.__dict:
-            self.__dict[chave] = {}
+            self.__dict.pop(chave)
 
     @property
     def underlying_dict(self):
