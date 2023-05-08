@@ -38,7 +38,8 @@ class SocketServidor(object):
             return
         
         print(str(client_address) + ': ' + str(data, encoding='utf-8'))
-        self.__endpoints.processar_mensagem(data)
+        response = self.__endpoints.processar_mensagem(data)
+        client_socket.send(response)
 
     def run(self):
         server_socket = self.__inicia_servidor()

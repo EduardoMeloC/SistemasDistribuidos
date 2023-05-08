@@ -7,7 +7,7 @@ parent_dir = os.path.dirname(current_dir)
 solution_dir = os.path.dirname(parent_dir)
 sys.path.append(solution_dir)
 
-from Comunicacao.Mensagem import ler_mensagem
+from Comunicacao.Mensagem import ler_request, criar_response
 from Dominio.ServicoDicionario import ServicoDicionario
 
 class Endpoints(object):
@@ -15,21 +15,29 @@ class Endpoints(object):
         self.servico_dicionario = servico_dicionario
 
     def processar_mensagem(self, bytes_mensagem):
-        mensagem = ler_mensagem(bytes_mensagem)
+        mensagem = ler_request(bytes_mensagem)
         tipo, params = mensagem['tipo'], mensagem['params']
 
         if tipo == 'get':
             if 'chave' not in params:
                 raise ValueError(f"Esperava 'chave' como um parametro de get")
             chave = params['chave']
-            return self.servico_dicionario.ler(chave)
+            valor = self.servico_dicionario.ler(chave)
+            if valor:
+                response = criar_response({'tipo': sucesso, 'corpo': {'valor': valor}})
+            else:
+                response = criar_response({'tipo': falha, 'corpo': {'falha': 'falha ao ler chave'}})
+            return response
+
         if tipo == 'post':
             if 'chave' not in params:
                 raise ValueError(f"Esperava 'chave' como um parametro de post")
             if 'valor' not in params:
                 raise ValueError(f"Esperava 'valor' como um parametro de post")
             chave, valor = params['chave'], params['valor']
-            return self.servico_dicionario.escrever(chave, valor)
+            self.servico_dicionario.escrever(chave, valor)
+            response = criar_response({'tipo': sucesso})
+            return response
         if tipo == 'action':
             if 'action' not in params:
                 raise ValueError(f"Esperava 'action' como um parametro de action")
@@ -38,6 +46,8 @@ class Endpoints(object):
             if action not in actions_disponiveis:
                 raise ValueError(f"Esperava parametro 'action' como algum entre: {actions_disponiveis}, mas recebeu {action}")
             if action == 'salvar':
-                return self.servico_dicionario.salvar()
+                retorno = self.servico_dicionario.salvar()
             if action == 'carregar':
-                return self.servico_dicionario.carregar()
+                retorno = self.servico_dicionario.carregar()
+            response = criar_response({'tipo': sucesso})
+            return response
