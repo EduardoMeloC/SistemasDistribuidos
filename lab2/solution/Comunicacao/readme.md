@@ -20,10 +20,8 @@ Em seguida, o servidor invoca o método de leitura do dicionário, e, se tudo oc
   "tipo": "sucesso", 
   "corpo": {"valor": ["abacate", "acerola"]}
 }
+```
 
 O cliente então conseguirá exibir diferentes resultados dependendo do tipo da resposta, e dependendo do seu valor.
 É válido ressaltar que, mesmo seguindo um padrão para a comunicação, é importante conhecer quais são as chaves que serão enviadas no "corpo" da resposta - esse detalhe não é do escopo do módulo de comunicação, mas do contrato entre o cliente e servidor, e o que cada um espera de suas
 requisições e suas respostas.
-
-}
-
