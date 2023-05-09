@@ -2,9 +2,10 @@ import sys
 from Dominio.ServicoDicionario import ServicoDicionario
 
 class InterfaceServidor(object):
-    def __init__(self, servico_dicionario: ServicoDicionario, conexoes_ativas):
+    def __init__(self, servico_dicionario: ServicoDicionario, conexoes_ativas, threads_de_cliente):
         self.__servico_dicionario = servico_dicionario
         self.__conexoes_ativas = conexoes_ativas
+        self.__threads_de_cliente = threads_de_cliente
 
     def set_socket(self, server_socket):
         self.__server_socket = server_socket
@@ -66,15 +67,15 @@ class InterfaceServidor(object):
         if len(comando_args) != 0:
             print(f"Sintaxe esperada: desligar")
             return
-        if not self.__conexoes_ativas:
-            self.__server_socket.close()
-            sys.exit()
-        else:
-            print("Ha conexoes ativas.")
+        print("Desligando servidor... (aguardando eventuais clientes encerrarem conexão)")
+        for thread in self.__threads_de_cliente:
+            thread.join()
+        self.__server_socket.close()
+        sys.exit()
 
     def listarconexoes(self, comando_args):
         if len(comando_args) != 0:
             print(f"Sintaxe esperada: listarconexoes")
             return
-        print(self.__conexoes_ativas)
+        print(list(self.__conexoes_ativas.values()))
 
