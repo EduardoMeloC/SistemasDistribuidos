@@ -21,4 +21,5 @@ Separamos, do lado do cliente, a camada de interface, e do lado do servidor, as 
 
 Detalhes acerca da implementação do **Servidor** e do **Cliente** estarão em seus respectivos diretérios.
 
-[TODO]: <> (Detalhes acerca das mensagens trocadas e da comunicação feita entre o cliente e o servidor)
+Comum tanto ao **Servidor** quanto ao **Cliente**, é o módulo de criação de mensagens, presente na pasta de ```Comunicacao```.
+Esse módulo foi criado com a finalidade de proporcionar ao cliente e ao servidor uma maneira de criar mensagens que seguem um padrão específico para a comunicação - e a ideia é que essa comunicação fosse minimamente genérica e não somente restrita a essa aplicação de dicionário, sendo possível fazer chamadas de ```get```, ```post```, ```delete``` e ```action```. Mais detalhes acerca da comunicação estarão também presentes em seu respectivo diretório.

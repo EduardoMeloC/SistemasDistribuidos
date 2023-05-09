@@ -17,13 +17,6 @@ def main():
     servicoDicionario = ServicoDicionario(Dicionario(), Repositorio(configuracao))
     socketServidor = SocketServidor(servicoDicionario, configuracao)
     socketServidor.run()
-    # servicoDicionario.escrever("a", "abacate")
-    # servicoDicionario.escrever("b", "bergamota")
-    # servicoDicionario.escrever("a", "acerola")
-    # servicoDicionario.carregar()
-    # print(servicoDicionario.ler("a"))
-    # print(servicoDicionario.ler("b"))
-    # servicoDicionario.salvar()
 
 if __name__ == '__main__':
     main()

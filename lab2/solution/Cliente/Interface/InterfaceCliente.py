@@ -35,7 +35,7 @@ class InterfaceCliente(object):
             else:
                 print(valor)
         elif response.get("tipo") == "falha":
-            print("Ocorreu um erro ao realizar a requisição.")
+            print("Ocorreu um erro ao realizar a requisição: {response}")
 
     def escrever(self, comando_args):
         if len(comando_args) != 2:

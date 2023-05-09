@@ -23,10 +23,7 @@ class Endpoints(object):
                 raise ValueError(f"Esperava 'chave' como um parametro de get")
             chave = params['chave']
             valor = self.servico_dicionario.ler(chave)
-            if valor:
-                response = criar_response({'tipo': sucesso, 'corpo': {'valor': valor}})
-            else:
-                response = criar_response({'tipo': falha, 'corpo': {'falha': 'falha ao ler chave'}})
+            response = criar_response('sucesso', {'valor': valor})
             return response
 
         if tipo == 'post':
@@ -36,7 +33,7 @@ class Endpoints(object):
                 raise ValueError(f"Esperava 'valor' como um parametro de post")
             chave, valor = params['chave'], params['valor']
             self.servico_dicionario.escrever(chave, valor)
-            response = criar_response({'tipo': sucesso})
+            response = criar_response('sucesso')
             return response
         if tipo == 'action':
             if 'action' not in params:
@@ -46,8 +43,11 @@ class Endpoints(object):
             if action not in actions_disponiveis:
                 raise ValueError(f"Esperava parametro 'action' como algum entre: {actions_disponiveis}, mas recebeu {action}")
             if action == 'salvar':
-                retorno = self.servico_dicionario.salvar()
-            if action == 'carregar':
-                retorno = self.servico_dicionario.carregar()
-            response = criar_response({'tipo': sucesso})
+                self.servico_dicionario.salvar()
+                response = criar_response('sucesso')
+            elif action == 'carregar':
+                self.servico_dicionario.carregar()
+                response = criar_response('sucesso')
+            else:
+                response = criar_response('falha')
             return response

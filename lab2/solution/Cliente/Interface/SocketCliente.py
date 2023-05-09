@@ -9,27 +9,16 @@ class SocketCliente(object):
         self.__interface_cliente = InterfaceCliente()
         self.__host = 'localhost'
         self.__port = configuracao["porta"]
+    
+    def __inicia_cliente(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((self.__host, self.__port))
+        self.__interface_cliente.set_socket(sock)
+        return sock
 
-    def __envia_requisicao(sock, data):
-        response = self.__endpoints
-        sock.send(msg_to_server)
-
-
-    def receive_data(sock):
-        msg_from_server = sock.recv(1024)
-        string_from_server = msg_from_server.decode('utf-8')
-        return string_from_server
-
-
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((HOST, PORT))
-
-        running = True
-        while running:
+    def run(self):
+        client_socket = self.__inicia_cliente()
+        print('Conectado ao servidor de dicionário')
+        while True:
             user_input = input()
-            if user_input == 'fim':
-                break
-
-            send_data(sock, user_input)
-            string_from_server = receive_data(sock)
-            print(string_from_server)
+            self.__interface_cliente.executar_comando(user_input)

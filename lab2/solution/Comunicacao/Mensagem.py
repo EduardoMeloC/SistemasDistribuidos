@@ -46,7 +46,7 @@ def ler_request(message_bytes):
 
     return mensagem
 
-def criar_response(tipo, corpo):
+def criar_response(tipo, corpo=None):
     """
     Cria uma mensagem de response para a comunicação sobre a camada de trasporte.
 

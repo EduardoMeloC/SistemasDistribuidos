@@ -1,3 +1,12 @@
+import os
+import sys
+
+# Get the path of the solution directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+solution_dir = os.path.dirname(parent_dir)
+sys.path.append(solution_dir)
+
 from Comunicacao.Mensagem import criar_request, ler_response
 
 class Endpoints(object):
