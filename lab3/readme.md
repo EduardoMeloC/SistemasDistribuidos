@@ -19,7 +19,7 @@ O lado servidor da aplicação deverá oferecer as seguintes funcionalidades de 
 
 As operações de escrita e remoção deverão ser salvas em disco de forma automática pelo servidor.
 
-O servidor deverá ser multithreading: deverá tratar cada nova conexão de cliente como um novo fluxo de execução e atender às requisições desse cliente dentro do novo fluxo de execução.
+**O servidor deverá ser multithreading**: deverá tratar cada nova conexão de cliente como um novo fluxo de execução e atender às requisições desse cliente dentro do novo fluxo de execução.
 
 O lado cliente deverá oferecer uma interface de acesso para as funcionalidades descritas acima.
 
