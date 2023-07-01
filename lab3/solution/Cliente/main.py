@@ -1,8 +1,9 @@
 import sys
 import rpyc
 
-SERVIDOR = 'localhost'
+SERVIDOR = "localhost"
 PORTA = 3000
+
 
 class InterfaceCliente(object):
     def __init__(self, conn):
@@ -10,24 +11,24 @@ class InterfaceCliente(object):
         self.__comandos = {
             "ler": {
                 "sintaxe_esperada": "ler <chave>",
-                "descricao": "Lê uma chave do dicionário remoto."
+                "descricao": "Lê uma chave do dicionário remoto.",
             },
             "escrever": {
                 "sintaxe_esperada": "escrever <chave> <valor>",
-                "descricao": "Escreve o valor em uma chave do dicionário remoto."
+                "descricao": "Escreve o valor em uma chave do dicionário remoto.",
             },
             "remover": {
                 "sintaxe_esperada": "remover <chave>",
-                "descricao": "Remove uma chave do dicionário remoto."
+                "descricao": "Remove uma chave do dicionário remoto.",
             },
             "ajuda": {
                 "sintaxe_esperada": "ajuda <comando>",
-                "descricao": "Obtem informações acerca de um comando."
+                "descricao": "Obtem informações acerca de um comando.",
             },
             "sair": {
                 "sintaxe_esperada": "sair",
-                "descricao": "Encerra a execução do cliente."
-            }
+                "descricao": "Encerra a execução do cliente.",
+            },
         }
 
     def cumprimentar(self):
@@ -55,7 +56,8 @@ class InterfaceCliente(object):
             func(comando_args)
         else:
             print(
-                f"Comando invalido: {comando_nome}. Use algum dos seguintes: {list(self.__comandos.keys())}")
+                f"Comando invalido: {comando_nome}. Use algum dos seguintes: {list(self.__comandos.keys())}"
+            )
         print()
 
     def ajuda(self, comando_args):
@@ -66,7 +68,9 @@ class InterfaceCliente(object):
             print(f"Descrição:", self.__comandos[comando]["descricao"])
         else:
             print("Comandos disponíveis: ", list(self.__comandos.keys()))
-            print("Digite 'ajuda <comando>' para obter mais informações acerca de um comando específico.")
+            print(
+                "Digite 'ajuda <comando>' para obter mais informações acerca de um comando específico."
+            )
 
     def ler(self, comando_args):
         if len(comando_args) != 1:
@@ -82,7 +86,9 @@ class InterfaceCliente(object):
 
     def escrever(self, comando_args):
         if len(comando_args) < 2:
-            print(f"Sintaxe esperada: ", {self.__comandos["escrever"]["sintaxe_esperada"]})
+            print(
+                f"Sintaxe esperada: ", {self.__comandos["escrever"]["sintaxe_esperada"]}
+            )
             return
         chave, valor = comando_args[0], " ".join(comando_args[1:])
         print(f"Escrevendo [{chave}: {valor}]...")
@@ -91,7 +97,9 @@ class InterfaceCliente(object):
 
     def remover(self, comando_args):
         if len(comando_args) != 1:
-            print(f"Sintaxe esperada: ", {self.__comandos["remover"]["sintaxe_esperada"]})
+            print(
+                f"Sintaxe esperada: ", {self.__comandos["remover"]["sintaxe_esperada"]}
+            )
             return
         chave = comando_args[0]
         print(f"Removendo '{chave}'...")
@@ -109,6 +117,7 @@ class InterfaceCliente(object):
 def iniciaConexao():
     conn = rpyc.connect(SERVIDOR, PORTA)
     return conn
+
 
 def main():
     conn = iniciaConexao()
