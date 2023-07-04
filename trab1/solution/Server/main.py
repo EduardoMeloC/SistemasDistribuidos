@@ -102,6 +102,8 @@ class BrokerData:
         O criador do tópico é automaticamente subscrito no novo tópico criado.
         """
         id = id_correction(id)
+        if id not in self.users:
+            return False
         if topicname not in self.topics:
             self.topics[topicname] = [id]
         if id not in self.users:
@@ -159,12 +161,18 @@ class BrokerService(rpyc.Service):  # type: ignore
         """
         id = id_correction(id)
         self.data.connections[self.client_conn] = id
+        # Se o usuário está fazendo primeiro login
         if id not in self.data.users:
             print(f"Novo usuário: {id}")
             self.data.users[id] = UserInfo(
                 online=True, callback=callback, messages_queue=[]
             )
         else:
+            # Se o usuário já fez login antes
+            if self.data.users[id].online:
+                # Se o usuário já está online, não permite login simultaneo
+                self.client_conn.close()
+                return False
             print(f"Usuário se reconectou: {id}")
             self.data.users[id].online = True
             self.data.users[id].callback = callback
@@ -184,6 +192,8 @@ class BrokerService(rpyc.Service):  # type: ignore
         Função responde se Anúncio conseguiu ser publicado.
         """
         id = id_correction(id)
+        if id not in self.data.users:
+            return False
         print(f"{id} está publicando no tópico {topic}.")
         if topic in self.data.topics:
             print(f"Usuários inscritos em {topic}: {self.data.topics[topic]}")
@@ -204,6 +214,8 @@ class BrokerService(rpyc.Service):  # type: ignore
         Função responde se `id` está inscrito no `topic`
         """
         id = id_correction(id)
+        if id not in self.data.users:
+            return False
         if topic in self.data.topics:
             if id in self.data.users:
                 if id not in self.data.topics[topic]:
@@ -217,6 +229,8 @@ class BrokerService(rpyc.Service):  # type: ignore
         Função responde se `id` não está inscrito no `topic`
         """
         id = id_correction(id)
+        if id not in self.data.users:
+            return False
         if topic in self.data.topics:
             if id in self.data.users:
                 if id in self.data.topics[topic]:

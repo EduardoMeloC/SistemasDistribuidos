@@ -199,7 +199,11 @@ def main():
     interface = InterfaceCliente(conn)
 
     interface.cumprimentar()
-    interface.login()
+    successful_login = interface.login()
+
+    if not successful_login:
+        print("Usuário já existente com conexão ativa.")
+
 
     while True:
         interface.menu()
