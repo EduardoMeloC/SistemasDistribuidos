@@ -5,7 +5,7 @@ import json
 from rpyc.utils.server import ThreadedServer
 from rpyc.utils.helpers import classpartial
 
-PORT = 18812
+PORT = 10001
 
 # Se não funcionar no lab rode:
 # $ pip install --user typing_extensions
@@ -101,6 +101,7 @@ class BrokerData:
         Dado um usuário e o nome de tópico que deseja-se criar, o tópico é criado, caso já não exista.
         O criador do tópico é automaticamente subscrito no novo tópico criado.
         """
+        id = id_correction(id)
         if topicname not in self.topics:
             self.topics[topicname] = [id]
         if id not in self.users:
@@ -140,6 +141,7 @@ class BrokerService(rpyc.Service):  # type: ignore
         Dado um usuário e o nome de tópico que deseja-se criar, o tópico é criado, caso já não exista.
         O criador do tópico é automaticamente subscrito no novo tópico criado.
         """
+        id = id_correction(id)
         if topicname not in self.data.topics:
             self.data.topics[topicname] = [id]
         if id not in self.data.users:
@@ -155,6 +157,7 @@ class BrokerService(rpyc.Service):  # type: ignore
         Dado um usuário, registra sua função de callback para envio de mensagens, e o ativa como online.
         Caso existam mensagens que chegaram enquanto o usuário estava offline, essas mensagens serão encaminhadas ao usuário.
         """
+        id = id_correction(id)
         self.data.connections[self.client_conn] = id
         if id not in self.data.users:
             print(f"Novo usuário: {id}")
@@ -180,6 +183,7 @@ class BrokerService(rpyc.Service):  # type: ignore
         """
         Função responde se Anúncio conseguiu ser publicado.
         """
+        id = id_correction(id)
         print(f"{id} está publicando no tópico {topic}.")
         if topic in self.data.topics:
             print(f"Usuários inscritos em {topic}: {self.data.topics[topic]}")
@@ -199,6 +203,7 @@ class BrokerService(rpyc.Service):  # type: ignore
         """
         Função responde se `id` está inscrito no `topic`
         """
+        id = id_correction(id)
         if topic in self.data.topics:
             if id in self.data.users:
                 if id not in self.data.topics[topic]:
@@ -211,6 +216,7 @@ class BrokerService(rpyc.Service):  # type: ignore
         """
         Função responde se `id` não está inscrito no `topic`
         """
+        id = id_correction(id)
         if topic in self.data.topics:
             if id in self.data.users:
                 if id in self.data.topics[topic]:
@@ -218,7 +224,13 @@ class BrokerService(rpyc.Service):  # type: ignore
                     self.data.topics[topic].remove(id)
                 return True
         return False
+    
 
+def id_correction(id: string):
+    if id == "" or id == None or id == "\n":
+        return "_"
+    else: 
+        return id
 
 # dispara o servidor
 if __name__ == "__main__":

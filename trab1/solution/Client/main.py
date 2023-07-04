@@ -4,8 +4,6 @@ from __future__ import annotations
 import os
 from rpyc.utils.server import ThreadedServer
 
-PORT = 18812
-
 # Se não funcionar no lab rode:
 # $ pip install --user typing_extensions
 import sys
@@ -53,8 +51,8 @@ elif not TYPE_CHECKING:
 
 from simple_term_menu import TerminalMenu
 
-SERVER = "localhost"
-PORT = 18812
+SERVER = "10.11.0.4"
+PORT = 10001
 
 
 class UserInfo:
@@ -132,7 +130,7 @@ class InterfaceCliente(object):
 
     def publicar(self):
         print("Em qual tópico você gostaria de publicar?")
-        options = [*self.topics, "Cancelar"]
+        options = [*self.topics, "Topico Inexistente", "Cancelar"]
         terminal_menu = TerminalMenu(options)
         selected_topic_index = terminal_menu.show()
         selected_topic = options[selected_topic_index]
@@ -151,7 +149,7 @@ class InterfaceCliente(object):
 
     def inscrever(self):
         print("Em qual tópico você gostaria de se inscrever?")
-        options = [*self.topics, "Cancelar"]
+        options = [*self.topics, "Topico Inexistente", "Cancelar"]
         terminal_menu = TerminalMenu(options)
         selected_topic_index = terminal_menu.show()
         selected_topic = options[selected_topic_index]
@@ -165,7 +163,7 @@ class InterfaceCliente(object):
 
     def desinscrever(self):
         print("Em qual tópico você gostaria de se desinscrever?")
-        options = [*self.topics, "Cancelar"]
+        options = [*self.topics, "Topico Inexistente", "Cancelar"]
         terminal_menu = TerminalMenu(options)
         selected_topic_index = terminal_menu.show()
         selected_topic = options[selected_topic_index]
@@ -182,14 +180,12 @@ class InterfaceCliente(object):
         sys.exit()
 
     def callback(self, messages_queue: list[Content]):
-        print("Callback sendo chamada!")
         for content in messages_queue:
-            print(content)
             author = content.author
             topic = content.topic
             data = content.data
 
-            print(f"\n> {author} publicou no tópico {topic}:")
+            print(f"> {author} publicou no tópico {topic}:")
             print(data)
 
     def login(self):
