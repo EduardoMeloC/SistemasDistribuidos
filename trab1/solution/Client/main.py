@@ -191,7 +191,10 @@ class InterfaceCliente(object):
     def login(self):
         print("Usuário: ", end=None)
         self.username = input()
-        self.__conn.root.exposed_login(self.username, self.callback)
+        successful_login = self.__conn.root.exposed_login(self.username, self.callback)
+        if not successful_login:
+            print("Usuário já existente com conexão ativa.")
+            sys.exit()
 
 
 def main():
@@ -199,10 +202,7 @@ def main():
     interface = InterfaceCliente(conn)
 
     interface.cumprimentar()
-    successful_login = interface.login()
 
-    if not successful_login:
-        print("Usuário já existente com conexão ativa.")
 
 
     while True:
