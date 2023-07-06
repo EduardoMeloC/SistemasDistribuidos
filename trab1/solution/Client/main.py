@@ -50,8 +50,9 @@ elif not TYPE_CHECKING:
 # endregion
 
 from simple_term_menu import TerminalMenu
+from threading import Thread
 
-SERVER = "10.11.0.4"
+SERVER = "localhost"
 PORT = 10001
 
 
@@ -184,7 +185,6 @@ class InterfaceCliente(object):
             author = content.author
             topic = content.topic
             data = content.data
-
             print(f"> {author} publicou no tópico {topic}:")
             print(data)
 
@@ -202,8 +202,7 @@ def main():
     interface = InterfaceCliente(conn)
 
     interface.cumprimentar()
-
-
+    interface.login()
 
     while True:
         interface.menu()

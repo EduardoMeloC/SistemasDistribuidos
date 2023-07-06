@@ -103,13 +103,11 @@ class BrokerData:
         """
         id = id_correction(id)
         if id not in self.users:
-            return False
-        if topicname not in self.topics:
-            self.topics[topicname] = [id]
-        if id not in self.users:
             self.users[id] = UserInfo(
                 online=False, callback=lambda: None, messages_queue=[]
             )
+        if topicname not in self.topics:
+            self.topics[topicname] = [id]
 
         return Topic(topicname)
 
@@ -131,10 +129,10 @@ class BrokerService(rpyc.Service):  # type: ignore
 
     def on_disconnect(self, conn):
         if self.data.connections[conn] != None:
-            print(f"{self.data.connections[conn]} finalizou a conexão.")
-            self.data.users[conn].online = False
-            self.data.users[conn].FnNotify = None
-        del self.data.users[conn]
+            id = self.data.connections[conn]
+            print(f"{id} finalizou a conexão.")
+            self.data.users[id].online = False
+            self.data.users[id].FnNotify = None
         del self.data.connections[conn]
 
     # Não é exposed porque só o "admin" tem acesso
@@ -169,9 +167,12 @@ class BrokerService(rpyc.Service):  # type: ignore
             )
         else:
             # Se o usuário já fez login antes
+            print(self.data.users[id].online)
             if self.data.users[id].online:
                 # Se o usuário já está online, não permite login simultaneo
-                self.client_conn.close()
+                print(f"Já existe um usuário com UserId {id}")
+                self.data.connections[self.client_conn] = f"Duplicated {id}"
+                # self.client_conn.close() # Força a desconexao do cliente, mesmo se ele não tratar o retorno do exposed_login false
                 return False
             print(f"Usuário se reconectou: {id}")
             self.data.users[id].online = True
@@ -238,13 +239,14 @@ class BrokerService(rpyc.Service):  # type: ignore
                     self.data.topics[topic].remove(id)
                 return True
         return False
-    
+
 
 def id_correction(id: string):
     if id == "" or id == None or id == "\n":
         return "_"
-    else: 
+    else:
         return id
+
 
 # dispara o servidor
 if __name__ == "__main__":
