@@ -62,6 +62,8 @@ elif not TYPE_CHECKING:
 # users: { UserId: UserInfo }
 # connections: { conn: UserId }
 
+import threading
+
 
 class UserInfo:
     def __init__(self, online: bool, callback: FnNotify, messages_queue: List[Content]):
@@ -202,7 +204,10 @@ class BrokerService(rpyc.Service):  # type: ignore
                 content = Content(author=id, topic=topic, data=data)
                 if self.data.users[user].online:
                     print(f"{user} está online. Chamando callback.")
-                    self.data.users[user].callback([content])
+                    thread = threading.Thread(
+                        target=self.data.users[user].callback, args=([content],)
+                    )
+                    thread.start()
                 else:
                     print(f"{user} está offline. Enfileirando callback.")
                     self.data.users[user].messages_queue.append(content)

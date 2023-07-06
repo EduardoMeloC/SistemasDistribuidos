@@ -16,6 +16,7 @@ else:
 
 from typing import Callable, TYPE_CHECKING, List, Dict, Union
 from dataclasses import dataclass
+import threading
 
 import rpyc  # type: ignore
 
@@ -51,6 +52,7 @@ elif not TYPE_CHECKING:
 
 from simple_term_menu import TerminalMenu
 from threading import Thread
+import time
 
 SERVER = "localhost"
 PORT = 10001
@@ -112,6 +114,7 @@ class InterfaceCliente(object):
 
     def menu(self):
         options = {
+            "Carregar novas Mensagens": "refresh",
             "Listar Tópicos": "listar_topicos",
             "Publicar": "publicar",
             "Inscrever": "inscrever",
@@ -124,6 +127,9 @@ class InterfaceCliente(object):
         selected_option = options_list[selected_option_index]
         option_function = getattr(self, options[selected_option])
         option_function()
+
+    def refresh(self):
+        print(f"{self.topics}", end="\r")
 
     def listar_topicos(self):
         print("Esses são os tópicos que existem:")
